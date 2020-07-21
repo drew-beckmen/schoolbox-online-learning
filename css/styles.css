@@ -1,0 +1,18 @@
+body, html {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.col-md-2 {   
+    background: #95b4cf;
+    text-align: center;
+}
+
+.btn {
+    margin-top: 50px;
+    color: #2a5478; 
+}
+
+.list-courses {
+    text-align: center;
+}
