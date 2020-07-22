@@ -1,28 +1,3 @@
-class Course {
-    static fetchById(id) {
-        return fetch(baseURL + `courses/${id}`)
-        .then(resp => resp.json())
-        .then(obj => obj.data.attributes)
-    }
-}
-
-class Platform {
-    static fetchById(id) {
-        return fetch(baseURL + `platforms/${id}`)
-        .then(resp => resp.json())
-        .then(obj => obj.data.attributes)
-    }
-}
-
-class Lesson {
-    static fetchById(id) {
-        return fetch(baseURL + `lessons/${id}`)
-        .then(resp => resp.json())
-        .then(obj => obj.data.attributes)
-    }
-}
-
-
 const main = document.getElementById("main-content")
 const baseURL = "http://localhost:3000/api/v1/"
 const allCourses = document.getElementById("all-courses")
@@ -32,12 +7,8 @@ allCourses.addEventListener("click", () => {
     const h1 = document.createElement("h1")
     h1.innerText = "Your Courses: Click One to Get Started "
     main.append(h1)
-    loadUserCourses(1)
+    loadUserCourses(1) //TODO: come back and change this when do user login
 })
-
-
-
-
 
 function addCourses(enrollment_ids) {
     enrollment_ids.forEach(id => addCourse(id))

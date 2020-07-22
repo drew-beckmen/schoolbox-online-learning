@@ -42,20 +42,39 @@ class Enrollment {
         const h1 = document.createElement("h1")
         h1.innerText = `${title}: ${description}`
         const h3 = document.createElement("h3")
-        h3.innerText = `Your are enrolled on: ${name}` 
+        h3.innerText = `Your are enrolled on: ${name}`
+        
+        //create button to link out to the course page
+        const courseLink = document.createElement("a")
+        courseLink.className = "btn btn-outline-info btn-lg"
+        courseLink.href = `${this.link}`
+        courseLink.role = "button"
+        courseLink.target = "_blank"
+        courseLink.innerText = "Go to Course Page"
+        
         const listLessons = document.createElement("div")
         listLessons.className = "lessons"
-    
-        listLessons.innerHTML = `<h3><strong>Lessons:</strong></h3>`
-        const ol = document.createElement("ol")
+        listLessons.innerHTML = `<br><h3><strong>Lessons:</strong></h3>`
+        
         for (let itm of currentLessonIds) {
-            let {name, description, notes} = await Lesson.fetchById(itm)
-            const li = document.createElement("li")
-            li.innerText = `${name}: ${description}, Notes: ${notes}`
-            ol.append(li)
+            //returns instance of Lesson class
+            let currentLesson = await Lesson.fetchById(itm) 
+            let {name, description, date} = currentLesson 
+            const singleLesson = document.createElement("div")
+            singleLesson.style = "border-radius: 15px 30px; background-color: #549ad6"
+            singleLesson.id = itm 
+            singleLesson.innerHTML = `
+                <h3>📖${name}</h3> 
+                <h5>${description}</h5>
+                <h5>Created: ${date}</h5>`
+
+            //create event listener for when you click on 
+            singleLesson.addEventListener("click", function() {
+                currentLesson.individualLessonPage()
+            })
+            listLessons.append(singleLesson)
         }
-        listLessons.append(ol)
-        main.append(h1, h3, listLessons)
+        main.append(h1, h3, courseLink, listLessons)
     }
 }
 Enrollment.all = [];

@@ -16,3 +16,11 @@ body, html {
 .list-courses {
     text-align: center;
 }
+
+.lessons {
+    text-align: center;
+}
+
+#editor {
+    height: 25%; 
+}
