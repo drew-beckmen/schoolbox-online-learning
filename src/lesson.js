@@ -1,4 +1,3 @@
-
 class Lesson {
 
     constructor(data) { 
@@ -35,6 +34,7 @@ class Lesson {
             // debugger 
             document.getElementById("editor").remove()//.style.visibility = "hidden"
             document.getElementsByClassName("ql-toolbar ql-snow")[0].remove()//.style.visibility = "hidden"
+            // document.getElementById("save-content").remove()
             document.getElementById("edit-notes").style.visibility = "visible"
             document.getElementById("note-content").innerHTML = obj.data.attributes.notes
         })
@@ -44,12 +44,17 @@ class Lesson {
         //Next Step: Implement Individual Lesson Show Page
         main.innerHTML = ""
         const singleLesson = document.createElement("div")
+        singleLesson.id = this.id 
+        const lessonTitle = document.createElement("h1")
+        lessonTitle.innerText = this.name 
+        const lessonDescription = document.createElement("h2")
+        lessonDescription.innerHTML = `<em>${this.description}</em>`
         const lessonNotes = document.createElement("h2")
         lessonNotes.innerText = "Lesson Notes"
         const noteContent = document.createElement("p")
         noteContent.id = "note-content"
         noteContent.innerHTML = this.notes 
-        singleLesson.append(lessonNotes, noteContent)
+        singleLesson.append(lessonTitle, lessonDescription, lessonNotes, noteContent)
         main.append(singleLesson)
 
         //Edit Notes Button to Add Quill.JS to the DOM
@@ -83,8 +88,6 @@ class Lesson {
             textEditor.append(saveDelta)
         })
         main.append(editNotes)
-    }
-
-    
+    } 
 }
 Lesson.all = [];

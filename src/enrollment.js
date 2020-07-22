@@ -9,6 +9,81 @@ class Enrollment {
         Enrollment.all.push(this);
     }
 
+    static createNewCourse() {
+        main.innerHTML = ""
+        main.innerHTML = `
+        <h1>Input a new course. Start learning!</h1>
+        <div class="form-group">
+        <form id="new-course-form">
+            <label>Course Title:</label> <input class="form-control" type='text'><br>
+            <label>Course Description: </label><input class="form-control" type='text'><br>
+            <label>Course Link: </label> <input class="form-control" type='text'><br>
+            <label>Choose an existing platform or enter a new one: </label>
+        </form>
+        </div>`
+        const newForm = document.getElementById("new-course-form")
+        const platforms = document.createElement("select")
+        platforms.className = "form-control"
+        Platform.all.forEach(platform => {
+            const option = document.createElement("option")
+            option.id = platform.id 
+            option.innerText = platform.name 
+            platforms.append(option)
+        })
+        newForm.append(platforms)
+        //option to create a new platform. 
+        newForm.innerHTML += `
+            <br><label>New Platform: </br><input class="form-control" type='text' id='new-platform'><br>
+        `
+        const submitButton = document.createElement("input")
+        submitButton.type = "submit"
+        submitButton.className = "form-control"
+
+        newForm.addEventListener("submit", async function() {
+            event.preventDefault()
+            const courseTitle = event.target[0].value 
+            const courseDescription = event.target[1].value 
+            const link = event.target[2].value 
+            const existingPlatform = event.target[3].value 
+            const newPlatform = event.target[4].value 
+            let platform_id; 
+            let user_id = 1; //TODO: change this when login is introduced
+            let course_id; 
+            if (newPlatform.length > 0) {
+                let x = await Platform.postNewPlatform(newPlatform)
+                platform_id = Platform.all[Platform.all.length - 1].id 
+            }
+            else {
+                platform_id = event.target[3].options[event.target[3].selectedIndex].id;
+            }
+            course_id = await Course.postNewCourse(courseTitle, courseDescription, platform_id)
+            Enrollment.postNewEnrollment(link, user_id, course_id)
+            newForm.reset()
+            document.getElementById("all-courses").click()
+        })
+
+        newForm.append(submitButton)
+    }
+
+    static postNewEnrollment(link, user_id, course_id) {
+        return fetch(baseURL + "enrollments", {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json", 
+                Accept: "application/json"
+            }, 
+            body: JSON.stringify({
+                link, 
+                user_id, 
+                course_id  
+            })
+        })
+        .then(resp => resp.json())
+        .then(obj => {
+            new Enrollment(obj.data.id, obj.data.attributes, obj.data.relationships)
+        })
+    }
+
     async render() {
         let {title, description, platform_id} = await Course.fetchById(this.course_id)
         let {name} = await Platform.fetchById(platform_id)
@@ -58,6 +133,7 @@ class Enrollment {
         
         for (let itm of currentLessonIds) {
             //returns instance of Lesson class
+            //TODO: i guess you could insert logic to check if Lesson.all has what you are looking for so no need to make fetch request
             let currentLesson = await Lesson.fetchById(itm) 
             let {name, description, date} = currentLesson 
             const singleLesson = document.createElement("div")

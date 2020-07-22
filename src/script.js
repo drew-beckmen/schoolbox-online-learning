@@ -1,6 +1,7 @@
 const main = document.getElementById("main-content")
 const baseURL = "http://localhost:3000/api/v1/"
 const allCourses = document.getElementById("all-courses")
+const newCourse = document.getElementById("new-course")
 
 allCourses.addEventListener("click", () => {
     main.innerHTML = ""
@@ -8,6 +9,16 @@ allCourses.addEventListener("click", () => {
     h1.innerText = "Your Courses: Click One to Get Started "
     main.append(h1)
     loadUserCourses(1) //TODO: come back and change this when do user login
+})
+
+newCourse.addEventListener("click", function() {
+    fetch(baseURL + "platforms")
+    .then(resp => resp.json())
+    .then(obj => {
+        obj.data.forEach(plat => new Platform(plat))
+        Enrollment.createNewCourse() 
+
+    })
 })
 
 function addCourses(enrollment_ids) {
@@ -19,7 +30,7 @@ function addCourse(id) {
     .then(resp => resp.json())
     .then(obj =>{
         let e = new Enrollment(obj.data.id, obj.data.attributes, obj.data.relationships)
-        e.render() //add it to the DOM
+        e.render()
     })
 }
 

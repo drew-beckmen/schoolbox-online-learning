@@ -1,11 +1,14 @@
 body, html {
     height: 100%;
     font-family: 'Roboto', sans-serif;
+    overflow: scroll;
+    /* overflow: scroll */
 }
 
 .col-md-2 {   
     background: #95b4cf;
     text-align: center;
+    /* position: fixed; */
 }
 
 .btn {
@@ -24,3 +27,10 @@ body, html {
 #editor {
     height: 25%; 
 }
+/* 
+#bottom {
+    position: fixed; 
+    bottom: 0; 
+    left: 0;
+    width: 100%; 
+} */
