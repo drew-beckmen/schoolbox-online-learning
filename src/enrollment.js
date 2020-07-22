@@ -44,10 +44,8 @@ class Enrollment {
             const courseTitle = event.target[0].value 
             const courseDescription = event.target[1].value 
             const link = event.target[2].value 
-            const existingPlatform = event.target[3].value 
             const newPlatform = event.target[4].value 
             let platform_id; 
-            let user_id = 1; //TODO: change this when login is introduced
             let course_id; 
             if (newPlatform.length > 0) {
                 let x = await Platform.postNewPlatform(newPlatform)

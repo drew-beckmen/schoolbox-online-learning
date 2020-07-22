@@ -34,3 +34,21 @@ body, html {
     left: 0;
     width: 100%; 
 } */
+
+#login {
+    text-align: center; 
+    font-family: 'Roboto', sans-serif;
+    font-size: xx-large;
+    padding-top: 115px; 
+    margin-top: 10%;
+    height: 50%;
+    border: 10px solid #2a5478;
+    background-color: #2a5478;
+    background-image: url("https://teachonline.ca/sites/default/files/tools-trends/banner/new-pedagogy-1140x400.jpg"); 
+}
+
+#login-text {
+    background-color: #ffffff;
+    border: 5px solid #2a5478;
+    border-radius: 20px 40px; 
+}

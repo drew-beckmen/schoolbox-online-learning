@@ -2,14 +2,54 @@ const main = document.getElementById("main-content")
 const baseURL = "http://localhost:3000/api/v1/"
 const allCourses = document.getElementById("all-courses")
 const newCourse = document.getElementById("new-course")
+let user_id; 
 
 allCourses.addEventListener("click", () => {
     main.innerHTML = ""
     const h1 = document.createElement("h1")
     h1.innerText = "Your Courses: Click One to Get Started "
     main.append(h1)
-    loadUserCourses(1) //TODO: come back and change this when do user login
+    loadUserCourses(user_id)
 })
+
+//Main Login Function:
+function login() {
+    main.innerHTML = ""
+    const loginForm = document.createElement("div")
+    loginForm.className = "align-self-center"
+    loginForm.id = "login"
+    const formContent = document.createElement("form")
+    formContent.innerHTML = `
+    <label id="login-text">Enter your Name to Login or Sign Up:</label><br>
+    <input type=text" placeholder='Name goes here'><br><br>`
+    const loginButton = document.createElement("input")
+    loginButton.type = "submit"
+    loginButton.value = "Start Learning!"
+
+    formContent.addEventListener("submit", async function() {
+        event.preventDefault() 
+        const name = event.target[0].value 
+        let users = await User.findAllUsers()
+        const currentUser = User.isValidUser(name, users)
+        
+        //Find user by name 
+        if (!!currentUser) { user_id = currentUser }
+        else {
+            //Need to create a new User 
+            let newUser = await User.postNewUser(name)
+            user_id = newUser 
+        }
+        document.getElementById("all-courses").disabled = false 
+        document.getElementById("new-course").disabled = false 
+        document.getElementById("all-courses").click()     
+        document.getElementsByClassName("navbar-text")[0].innerHTML = ` <button style="background-color:#5f8db6" onclick="location.reload()">Log Out</button>`
+    })
+
+    formContent.append(loginButton)
+    loginForm.append(formContent)
+    main.append(loginForm)
+}
+
 
 newCourse.addEventListener("click", function() {
     fetch(baseURL + "platforms")
@@ -40,4 +80,4 @@ function loadUserCourses(id) {
     .then(obj => addCourses(obj.data.relationships.enrollments.data.map(itm => itm.id)))
 }
 
-
+login() 
