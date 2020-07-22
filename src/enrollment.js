@@ -130,6 +130,7 @@ class Enrollment {
 
 
     async individualCoursePage() {
+        debugger 
         main.innerHTML = ""
         const currentCourse = Enrollment.all.find(e => e.id === this.id)
         const currentLessonIds = currentCourse.lessons.map(lesson => lesson.id) 

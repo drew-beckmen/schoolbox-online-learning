@@ -5,6 +5,7 @@ class Lesson {
         this.name = data.attributes.name 
         this.description = data.attributes.description 
         this.notes = data.attributes.notes 
+        this.enrollment_id = data.attributes.enrollment_id
         this.flashcards = data.relationships.flashcards.data 
         this.date = data.attributes.created_at.split("T")[0] 
         Lesson.all.push(this);
@@ -50,11 +51,21 @@ class Lesson {
         const lessonDescription = document.createElement("h2")
         lessonDescription.innerHTML = `<em>${this.description}</em>`
         const lessonNotes = document.createElement("h2")
+        
+        //Create a button to go back to the course show page
+        const lessonsCourse = Enrollment.all.find(course => course.id == this.enrollment_id)
+        const backButton = document.createElement("button")
+        backButton.className = "btn btn-outline-info"
+        backButton.innerText = "Back to Course"        
+        backButton.addEventListener("click", () => {
+            lessonsCourse.individualCoursePage()
+        }) 
+        //------------------------------------------------
         lessonNotes.innerText = "Lesson Notes"
         const noteContent = document.createElement("p")
         noteContent.id = "note-content"
         noteContent.innerHTML = this.notes 
-        singleLesson.append(lessonTitle, lessonDescription, lessonNotes, noteContent)
+        singleLesson.append(lessonTitle, lessonDescription, backButton, lessonNotes, noteContent)
         main.append(singleLesson)
 
         //Edit Notes Button to Add Quill.JS to the DOM
