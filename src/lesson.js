@@ -32,10 +32,8 @@ class Lesson {
         .then(obj => {
             this.notes = obj.data.attributes.notes
             alert("Notes Saved Successfully!")
-            // debugger 
             document.getElementById("editor").remove()//.style.visibility = "hidden"
             document.getElementsByClassName("ql-toolbar ql-snow")[0].remove()//.style.visibility = "hidden"
-            // document.getElementById("save-content").remove()
             document.getElementById("edit-notes").style.visibility = "visible"
             document.getElementById("note-content").innerHTML = obj.data.attributes.notes
         })
