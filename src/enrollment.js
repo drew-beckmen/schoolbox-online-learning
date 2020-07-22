@@ -57,7 +57,7 @@ class Enrollment {
                 platform_id = event.target[3].options[event.target[3].selectedIndex].id;
             }
             course_id = await Course.postNewCourse(courseTitle, courseDescription, platform_id)
-            Enrollment.postNewEnrollment(link, user_id, course_id)
+            let newEnrollment = await Enrollment.postNewEnrollment(link, user_id, course_id)
             newForm.reset()
             document.getElementById("all-courses").click()
         })
