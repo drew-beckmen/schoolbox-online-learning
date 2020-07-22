@@ -57,7 +57,6 @@ newCourse.addEventListener("click", function() {
     .then(obj => {
         obj.data.forEach(plat => new Platform(plat))
         Enrollment.createNewCourse() 
-
     })
 })
 

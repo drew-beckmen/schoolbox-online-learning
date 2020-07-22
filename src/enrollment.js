@@ -1,4 +1,3 @@
-
 class Enrollment {
     constructor(id, data, relationships) {
         this.id = id 
@@ -103,6 +102,32 @@ class Enrollment {
         main.append(course)
     }
 
+    addLesson() {
+        main.innerHTML = ""
+        main.innerHTML = `
+        <h1>What are you learning?</h1>
+        <div class="form-group">
+        <form id="new-lesson-form">
+            <label>Lesson Title:</label> <input class="form-control" type='text'><br>
+            <label>Lesson Description: </label><input class="form-control" type='text'><br>
+        </form>
+        </div>`
+        const newForm = document.getElementById("new-lesson-form")
+        const submitButton = document.createElement("input")
+        submitButton.type = "submit"
+        submitButton.value = "Create Lesson"
+        submitButton.className = "form-control"
+
+        newForm.addEventListener("submit", () => {
+            event.preventDefault()
+            const title = event.target[0].value 
+            const description = event.target[1].value 
+            Lesson.postNewLesson(title, description, this.id) 
+        })
+
+        newForm.append(submitButton)
+    }
+
 
     async individualCoursePage() {
         main.innerHTML = ""
@@ -124,6 +149,15 @@ class Enrollment {
         courseLink.role = "button"
         courseLink.target = "_blank"
         courseLink.innerText = "Go to Course Page"
+
+        //create button to add lesson to this enrollment: 
+        const newLesson = document.createElement("button")
+        newLesson.className = "btn btn-outline-info btn-lg"
+        newLesson.innerText = "Start a new lesson"
+
+        newLesson.addEventListener("click", () => {
+            this.addLesson()
+        })
         
         const listLessons = document.createElement("div")
         listLessons.className = "lessons"
@@ -148,7 +182,7 @@ class Enrollment {
             })
             listLessons.append(singleLesson)
         }
-        main.append(h1, h3, courseLink, listLessons)
+        main.append(h1, h3, courseLink, newLesson, listLessons)
     }
 }
 Enrollment.all = [];

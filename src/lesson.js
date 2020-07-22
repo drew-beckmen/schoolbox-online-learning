@@ -89,5 +89,26 @@ class Lesson {
         })
         main.append(editNotes)
     } 
+
+    static postNewLesson(name, description, enrollment_id) {
+        fetch(baseURL + "lessons", {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json", 
+                Accept: "application/json"
+            },
+            body: JSON.stringify({
+                name,
+                description, 
+                notes: "", 
+                enrollment_id
+            })
+        })
+        .then(response => response.json())
+        .then(obj => {
+            let createdLesson = new Lesson(obj.data)
+            createdLesson.individualLessonPage()
+        })
+    }
 }
 Lesson.all = [];
