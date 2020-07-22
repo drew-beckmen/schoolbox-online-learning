@@ -116,6 +116,10 @@ class Lesson {
         .then(response => response.json())
         .then(obj => {
             let createdLesson = new Lesson(obj.data)
+            //need to add it to enrollments list of lessons 
+            let currentEnrollmentInstance = Enrollment.all.find(itm => itm.id === enrollment_id)
+            currentEnrollmentInstance.lessons.push(createdLesson)
+            
             createdLesson.individualLessonPage()
         })
     }
