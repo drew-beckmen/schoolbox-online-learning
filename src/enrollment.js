@@ -155,6 +155,15 @@ class Enrollment {
         newLesson.className = "btn btn-outline-info btn-lg"
         newLesson.innerText = "Start a new lesson"
 
+        //create a button to delete this course:
+        const deleteCourse = document.createElement("button")
+        deleteCourse.className = "btn btn-outline-info btn-lg"
+        deleteCourse.innerText = "Delete this course"
+
+        deleteCourse.addEventListener("click", () => {
+            this.deleteCourse()
+        })
+
         newLesson.addEventListener("click", () => {
             this.addLesson()
         })
@@ -182,7 +191,21 @@ class Enrollment {
             })
             listLessons.append(singleLesson)
         }
-        main.append(h1, h3, courseLink, newLesson, listLessons)
+        main.append(h1, h3, courseLink, newLesson, deleteCourse, listLessons)
+    }
+
+    deleteCourse() {
+        // debugger
+        //remove the instance from local storage. 
+        Enrollment.all = Enrollment.all.filter(e => e.id != this.id)
+        fetch(baseURL + `enrollments/${this.id}`, {
+            method: "DELETE"
+        })
+        .then(resp => {
+            alert("Course Deleted Successfully")
+            debugger 
+            document.getElementById("all-courses").click()
+        })
     }
 }
 Enrollment.all = [];

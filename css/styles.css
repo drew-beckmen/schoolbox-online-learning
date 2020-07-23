@@ -50,5 +50,5 @@ body, html {
 #login-text {
     background-color: #ffffff;
     border: 5px solid #2a5478;
-    border-radius: 20px 40px; 
+    /* border-radius: 20px 20px;  */
 }
