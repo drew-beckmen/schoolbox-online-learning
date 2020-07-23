@@ -5,7 +5,6 @@ const newCourse = document.getElementById("new-course")
 let user_id; 
 
 allCourses.addEventListener("click", () => {
-    debugger 
     main.innerHTML = ""
     const h1 = document.createElement("h1")
     h1.innerText = "Your Courses: Click One to Get Started "

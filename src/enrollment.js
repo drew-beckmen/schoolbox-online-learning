@@ -171,7 +171,7 @@ class Enrollment {
         const listLessons = document.createElement("div")
         listLessons.className = "lessons"
         listLessons.innerHTML = `<br><h3><strong>Lessons:</strong></h3>`
-        
+        debugger 
         for (let itm of currentLessonIds) {
             //returns instance of Lesson class
             //TODO: i guess you could insert logic to check if Lesson.all has what you are looking for so no need to make fetch request
@@ -195,7 +195,6 @@ class Enrollment {
     }
 
     deleteCourse() {
-        // debugger
         //remove the instance from local storage. 
         Enrollment.all = Enrollment.all.filter(e => e.id != this.id)
         fetch(baseURL + `enrollments/${this.id}`, {
@@ -203,7 +202,6 @@ class Enrollment {
         })
         .then(resp => {
             alert("Course Deleted Successfully")
-            debugger 
             document.getElementById("all-courses").click()
         })
     }

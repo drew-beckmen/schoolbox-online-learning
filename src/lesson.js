@@ -51,19 +51,30 @@ class Lesson {
         const lessonNotes = document.createElement("h2")
         
         //Create a button to go back to the course show page
-        const lessonsCourse = Enrollment.all.find(course => course.id == this.enrollment_id)
         const backButton = document.createElement("button")
-        backButton.className = "btn btn-outline-info"
-        backButton.innerText = "Back to Course"        
+        const lessonsCourse = Enrollment.all.find(course => course.id == this.enrollment_id)
+        backButton.className = "btn btn-outline-info btn-lg"
+        backButton.innerText = "Back to Course"   
+        backButton.id = "course-page"     
         backButton.addEventListener("click", () => {
             lessonsCourse.individualCoursePage()
         }) 
+
+        //Create a button to delete a lesson 
+        const deleteLesson = document.createElement("button")
+        deleteLesson.className = "btn btn-outline-info btn-lg"
+        deleteLesson.innerText = "Delete This Lesson"
+        deleteLesson.addEventListener("click", () => {
+            this.removeLesson()
+        })
+
+
         //------------------------------------------------
         lessonNotes.innerText = "Lesson Notes"
         const noteContent = document.createElement("p")
         noteContent.id = "note-content"
         noteContent.innerHTML = this.notes 
-        singleLesson.append(lessonTitle, lessonDescription, backButton, lessonNotes, noteContent)
+        singleLesson.append(lessonTitle, lessonDescription, backButton, deleteLesson, lessonNotes, noteContent)
         main.append(singleLesson)
 
         //Edit Notes Button to Add Quill.JS to the DOM
@@ -121,6 +132,23 @@ class Lesson {
             currentEnrollmentInstance.lessons.push(createdLesson)
             
             createdLesson.individualLessonPage()
+        })
+    }
+
+    removeLesson() {
+        Lesson.all = Lesson.all.filter(lesson => lesson.id != this.id)
+        debugger
+        fetch(baseURL + `lessons/${this.id}`, {
+            method: "DELETE"
+        })
+        .then(resp => {
+            alert("Lesson Deleted Successfully")
+            //need to get rid of the lesson in Enrollment's array
+            console.log(this)
+            const currentEnrollmentInstance = Enrollment.all.find(itm => itm.id == this.enrollment_id)
+            currentEnrollmentInstance.lessons = currentEnrollmentInstance.lessons.filter(lesson => lesson.id !== this.id)
+            debugger 
+            currentEnrollmentInstance.individualCoursePage()
         })
     }
 }
