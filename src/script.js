@@ -1,6 +1,7 @@
 const main = document.getElementById("main-content")
 const baseURL = "http://localhost:3000/api/v1/"
 const allCourses = document.getElementById("all-courses")
+const exploreCourses = document.getElementById("explore-courses")
 const newCourse = document.getElementById("new-course")
 let user_id; 
 
@@ -10,6 +11,14 @@ allCourses.addEventListener("click", () => {
     h1.innerText = "Your Courses: Click One to Get Started "
     main.append(h1)
     loadUserCourses(user_id)
+})
+
+exploreCourses.addEventListener("click", () => {
+    main.innerHTML = ""
+    const h1 = document.createElement("h1")
+    h1.innerText = "Top Online Courses of 2020"
+    main.append(h1)
+    Recommendation.listAll()
 })
 
 //Main Login Function:
@@ -43,8 +52,8 @@ function login() {
         document.getElementById("new-course").disabled = false 
         document.getElementById("all-courses").click()     
         document.getElementsByClassName("navbar-text")[0].innerHTML = ` <button style="background-color:#5f8db6" onclick="location.reload()">Log Out</button>`
+        document.getElementsByClassName("navbar navbar-light bg-light")[0].onclick = ""
     })
-
     formContent.append(loginButton)
     loginForm.append(formContent)
     main.append(loginForm)
