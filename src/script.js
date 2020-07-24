@@ -3,9 +3,11 @@ const baseURL = "http://localhost:3000/api/v1/"
 const allCourses = document.getElementById("all-courses")
 const exploreCourses = document.getElementById("explore-courses")
 const newCourse = document.getElementById("new-course")
+let flashcardState = false 
 let user_id; 
 
 allCourses.addEventListener("click", () => {
+    flashcardState = false 
     main.innerHTML = ""
     const h1 = document.createElement("h1")
     h1.innerText = "Your Courses: Click One to Get Started "
@@ -14,6 +16,7 @@ allCourses.addEventListener("click", () => {
 })
 
 exploreCourses.addEventListener("click", () => {
+    flashcardState = false 
     main.innerHTML = ""
     const h1 = document.createElement("h1")
     h1.innerText = "Top Online Courses of 2020"
@@ -61,6 +64,7 @@ function login() {
 
 
 newCourse.addEventListener("click", function() {
+    flashcardState = false 
     fetch(baseURL + "platforms")
     .then(resp => resp.json())
     .then(obj => {

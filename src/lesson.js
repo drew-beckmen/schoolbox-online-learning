@@ -39,7 +39,7 @@ class Lesson {
         })
     }
 
-    individualLessonPage() {
+    async individualLessonPage() {
         //Next Step: Implement Individual Lesson Show Page
         main.innerHTML = ""
         const singleLesson = document.createElement("div")
@@ -68,13 +68,23 @@ class Lesson {
             this.removeLesson()
         })
 
+        //Create a button to add a flashcard to this lesson
+        const addFlashcard = document.createElement("button")
+        addFlashcard.className = "btn btn-outline-info btn-lg"
+        addFlashcard.innerText = "Add A New Flashcard"
+
+        addFlashcard.addEventListener("click", () => {
+            flashcardState = false 
+            this.createNewFlashcard()
+        })
+
 
         //------------------------------------------------
         lessonNotes.innerText = "Lesson Notes"
         const noteContent = document.createElement("p")
         noteContent.id = "note-content"
         noteContent.innerHTML = this.notes 
-        singleLesson.append(lessonTitle, lessonDescription, backButton, deleteLesson, lessonNotes, noteContent)
+        singleLesson.append(lessonTitle, lessonDescription, backButton, deleteLesson, addFlashcard, lessonNotes, noteContent)
         main.append(singleLesson)
 
         //Edit Notes Button to Add Quill.JS to the DOM
@@ -82,8 +92,16 @@ class Lesson {
         editNotes.className = "btn btn-outline-info btn-sm"
         editNotes.innerText = "Edit Notes"
         editNotes.id = "edit-notes"
+
+        //Button to show lesson's flashcards 
+        const displayFlashcards = document.createElement("button")
+        displayFlashcards.className = "btn btn-outline-info btn-sm"
+        displayFlashcards.innerText = "Display Flashcards"
+        displayFlashcards.id = "display-flashcards"
+
         editNotes.addEventListener("click", () => {
             //-------Add Quill.JS Editor to the DOM------------
+            displayFlashcards.disabled = true 
             const textEditor = document.createElement("div")
             textEditor.id = "editor"
             main.append(textEditor)
@@ -103,12 +121,43 @@ class Lesson {
             //Event Listening for Submitting Notes:
             saveDelta.addEventListener("click", () => {
                 const newNotes = quill.root.innerHTML
+                displayFlashcards.disabled = false 
                 this.setNotes(newNotes)
             })
             textEditor.append(saveDelta)
         })
-        main.append(editNotes)
+
+        displayFlashcards.addEventListener("click", () => {
+            if (!flashcardState) {
+                const heading = document.createElement("h1")
+                heading.id = "flashcard-heading"
+                heading.innerText = "Your Lesson's Flashcards: "
+                main.append(heading)
+                displayFlashcards.innerText = "Hide Flashcards"
+                Flashcard.render(this.id)
+                editNotes.disabled = true 
+            }
+            else {
+                document.getElementsByClassName("flashcard")[0].remove()
+                document.getElementById("flashcard-heading").remove() 
+                document.getElementById("flip-flashcard").remove() 
+                document.getElementById("back-flashcard").remove() 
+                document.getElementById("forward-flashcard").remove() 
+                displayFlashcards.innerText = "Display Flashcards"
+                editNotes.disabled = false  
+            }
+            flashcardState = !flashcardState
+        })
+
+        main.append(editNotes, displayFlashcards)
+
+        //Flashcard Feature: 
+        this.flashcards.forEach(card => Flashcard.fetchById(card.id))
     } 
+
+    createNewFlashcard() {
+        Flashcard.postNewFlashcard(this.id)
+    }
 
     static postNewLesson(name, description, enrollment_id) {
         fetch(baseURL + "lessons", {
