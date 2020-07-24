@@ -133,7 +133,17 @@ class Lesson {
                 const heading = document.createElement("h1")
                 heading.id = "flashcard-heading"
                 heading.innerText = "Your Lesson's Flashcards: "
-                main.append(heading)
+
+                //Create a button to enter into Quiz Mode
+                const quizMode = document.createElement("button")
+                quizMode.className = "btn btn-outline-info"
+                quizMode.innerText = "Enter Quiz Mode"
+
+                quizMode.addEventListener("click", () => {
+                    Flashcard.quizMode(this.id)
+                })
+
+                main.append(heading, quizMode)
                 displayFlashcards.innerText = "Hide Flashcards"
                 Flashcard.render(this.id)
                 editNotes.disabled = true 

@@ -16,9 +16,17 @@ body, html {
     color: #2a5478; 
 }
 
+#quiz-mode-results {
+    text-align: center;
+    background-color: #4ebf8a;
+    border-radius: 15px 30px;
+    width: 100%; 
+}
+
 .list-courses {
     text-align: center;
 }
+
 
 .lessons {
     text-align: center;
