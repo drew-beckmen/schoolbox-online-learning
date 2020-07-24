@@ -98,6 +98,7 @@ class Lesson {
         displayFlashcards.className = "btn btn-outline-info btn-sm"
         displayFlashcards.innerText = "Display Flashcards"
         displayFlashcards.id = "display-flashcards"
+        if (this.flashcards.length === 0) {displayFlashcards.disabled = true}
 
         editNotes.addEventListener("click", () => {
             //-------Add Quill.JS Editor to the DOM------------

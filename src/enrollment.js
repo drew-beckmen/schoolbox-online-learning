@@ -14,9 +14,9 @@ class Enrollment {
         <h1>Input a new course. Start learning!</h1>
         <div class="form-group">
         <form id="new-course-form">
-            <label>Course Title:</label> <input class="form-control" type='text'><br>
-            <label>Course Description: </label><input class="form-control" type='text'><br>
-            <label>Course Link: </label> <input class="form-control" type='text'><br>
+            <label>Course Title:</label> <input class="form-control" required="true" type='text'><br>
+            <label>Course Description: </label><input required="true" class="form-control" type='text'><br>
+            <label>Course Link: </label> <input required="true" class="form-control" type='text'><br>
             <label>Choose an existing platform or enter a new one: </label>
         </form>
         </div>`

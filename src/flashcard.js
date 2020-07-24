@@ -36,7 +36,7 @@ class Flashcard {
         forwardButton.id = "forward-flashcard"
         if (flashcardsToDisplay.length <= 1 || flashcardsToDisplay.length == currentCardIndex - 1) {forwardButton.disabled = true}
         forwardButton.innerText = ">>"
-
+        
         flipButton.addEventListener("click", () => {
             flashcardDiv.innerText === flashcardsToDisplay[currentCardIndex].term ? flashcardDiv.innerText = flashcardsToDisplay[currentCardIndex].definition : flashcardDiv.innerText = flashcardsToDisplay[currentCardIndex].term
         })
@@ -76,6 +76,19 @@ class Flashcard {
         const newForm = document.getElementById("new-flashcard-form")
         newForm.append(submitButton)
 
+        //Allow user to return to lesson page
+        const backButton = document.createElement("button")
+        backButton.className = "btn btn-outline-info btn-lg"
+        backButton.id = "back-to-lesson"
+        backButton.innerText = "Return To Lesson Page"
+        const currentLesson = Lesson.all.find(lesson => lesson.id === lesson_id)
+        
+        backButton.addEventListener("click", () => {
+            currentLesson.individualLessonPage()
+        })
+
+        main.append(backButton)
+
         newForm.addEventListener("submit", () => {
             event.preventDefault()
             const term = event.target[0].value 
@@ -95,7 +108,10 @@ class Flashcard {
                 })
             })
             .then(response => response.json())
-            .then(obj => {new Flashcard(obj.data)})
+            .then(obj => {
+                currentLesson.flashcards.push(new Flashcard(obj.data))
+                alert("New Flashcard Created! 🚀")
+            })
             newForm.reset() 
         })
     }
