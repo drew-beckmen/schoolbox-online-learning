@@ -21,6 +21,11 @@ exploreCourses.addEventListener("click", () => {
     const h1 = document.createElement("h1")
     h1.innerText = "Top Online Courses of 2020"
     main.append(h1)
+    if (!!user_id) {
+        const h3 = document.createElement("h3")
+        h3.innerHTML = `<em>Click 'See More Info' for Details or Select a Course to Add to Your Profile</em>`
+        main.append(h3)
+    }
     Recommendation.listAll()
 })
 

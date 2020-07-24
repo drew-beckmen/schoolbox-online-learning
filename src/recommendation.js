@@ -26,6 +26,18 @@ class Recommendation {
         <h3>📖${this.title}</h3> 
         <h5>Taught By: ${this.creator}</h5>
         <a href=${this.link} style="color:navy" target="_blank">See More Info</a>`
+
+        //only allow this action if a user id logged in 
+        if (!!user_id) {
+            singleCourse.addEventListener("click", () => {
+                document.getElementById("new-course").click() 
+                setTimeout(() => {
+                    document.getElementById("new-course-form").children[1].value = this.title
+                    document.getElementById("new-course-form").children[4].value = `Created and taught by ${this.creator}`
+                    
+                }, 100)
+            })
+        }
         main.append(singleCourse)
     }
 }
