@@ -132,19 +132,31 @@ class Lesson {
             if (!flashcardState) {
                 const heading = document.createElement("h2")
                 heading.id = "flashcard-heading"
-                heading.innerText = "Your Lesson's Flashcards: "
+                heading.innerHTML = "Review Your Lesson's Flashcards: "
+
+                const instructions = document.createElement("h4")
+                instructions.innerText = "Want to practice? Try out quiz mode! Ready for a challenge? Try out test mode!"
 
                 //Create a button to enter into Quiz Mode
                 const quizMode = document.createElement("button")
                 quizMode.id = "quiz"
-                quizMode.className = "btn btn-outline-info"
+                quizMode.className = "btn btn-outline-info btn-lg"
                 quizMode.innerText = "Enter Quiz Mode"
 
                 quizMode.addEventListener("click", () => {
                     Flashcard.quizMode(this.id)
                 })
 
-                main.append(heading, quizMode)
+                //test mode button 
+                const testMode = document.createElement("button")
+                testMode.className = "btn btn-outline-info btn-lg"
+                testMode.innerText = "Enter Test Mode"
+
+                testMode.addEventListener("click", () => {
+                    Flashcard.testMode(this.id)
+                })
+
+                main.append(heading, quizMode, testMode)
                 displayFlashcards.innerText = "Hide Flashcards"
                 Flashcard.render(this.id)
                 editNotes.disabled = true 

@@ -117,7 +117,7 @@ class Flashcard {
     }
     static quizMode(lesson_id) {
         flashcardState = false 
-        main.innerHTML = "<h1>Welcome to Quiz Mode! Get Ready to Test Your Skills!</h1>"
+        main.innerHTML = `<h1>Welcome to Quiz Mode! Get Ready to Study!</h1>`
         let numCorrect = 0
         let numIncorrect = 0
 
@@ -145,37 +145,16 @@ class Flashcard {
         correctButton.addEventListener("click", () => {
             numCorrect++ 
             correctText.innerHTML = `<br/>Correct: ${numCorrect}`
-            if (forwardButton.disabled === true) {
-                resultsSection.innerHTML = `<h3>Results: ${(numCorrect / (numCorrect + numIncorrect)) * 100}%</h3>`
-                const resetButton = document.createElement("button")
-                resetButton.innerText = "Reset"
-                resetButton.className = "btn btn-warning btn-block"
-
-                //Allow user to return to lesson page
-                const backButton = document.createElement("button")
-                backButton.className = "btn btn-primary btn-block"
-                backButton.id = "back-to-lesson"
-                backButton.innerText = "Return To Lesson Page"
-                const currentLesson = Lesson.all.find(lesson => lesson.id === lesson_id)
-                
-                backButton.addEventListener("click", () => {
-                    currentLesson.individualLessonPage()
-                })
-
-                resultsSection.append(resetButton, backButton)
-
-                resetButton.addEventListener("click", () => {
-                    Flashcard.quizMode(lesson_id)
-                })
-            }
-            else {
-                forwardButton.click()             
-            }
+            showResults()
         })
 
         incorrectButton.addEventListener("click", () => {
             numIncorrect++
             incorrectText.innerHTML = `Incorrect: ${numIncorrect}`
+            showResults()
+        })
+
+        let showResults = function() {
             if (forwardButton.disabled === true) {
                 resultsSection.innerHTML = `<h3>Results: ${(numCorrect / (numCorrect + numIncorrect)) * 100}%</h3>`
                 const resetButton = document.createElement("button")
@@ -197,13 +176,106 @@ class Flashcard {
                 resetButton.addEventListener("click", () => {
                     Flashcard.quizMode(lesson_id)
                 })
-
-                
             }
             else {
-                document.getElementById("forward-flashcard").click()             
+                forwardButton.click()                         
             }
+        }
+    }
+
+    static testMode(lesson_id) {
+        main.innerHTML = `<h1>Welcome to Test Mode! Now is your chance to show off your skills!</h1>
+        <h3>The definition will be displayed. It is your responsibility to enter the corresponding term.</h3>` 
+        
+        let numCorrect = 0
+        let numIncorrect = 0
+        const resultsSection = document.createElement("div")
+        resultsSection.id = "quiz-mode-results"
+        const correctText = document.createElement("h3")
+        correctText.innerHTML = `Correct: ${numCorrect}`
+        const incorrectText = document.createElement("h3")
+        incorrectText.innerHTML = `Incorrect: ${numIncorrect}`
+        
+        resultsSection.append(correctText, incorrectText)
+        main.append(resultsSection)
+
+        Flashcard.render(lesson_id)
+
+        const forwardButton = document.getElementById("forward-flashcard")
+        document.getElementById("back-flashcard").remove()
+        forwardButton.style.visibility = "hidden"
+        const flipButton = document.getElementById("flip-flashcard")
+        flipButton.style.visibility = "hidden"
+        flipButton.click()
+
+        //create the form to enter a term: 
+        const termForm = document.createElement("form")
+
+        termForm.innerHTML = `<div id="test-form" class="form-group"><label>Enter the Term:</label><input class="form-control" type=text></div>`
+        const submitButton = document.createElement("input")
+        submitButton.type = "submit"
+        submitButton.className = "form-control"
+
+        termForm.addEventListener("submit", () => {
+            event.preventDefault()
+            flipButton.click()
+            const currentTerm = document.getElementsByClassName("flashcard")[0].innerText
+            
+            //remove previous wrong answer messages 
+            if (termForm.children[0].tagName === "P") {
+                termForm.children[0].remove()
+            }
+            const text = document.createElement("p")
+            
+            if (currentTerm === event.target[0].value) {
+                numCorrect++ 
+                text.innerText = "Correct!"
+                text.style.color = "green"
+                correctText.innerHTML = `Correct: ${numCorrect}`
+            }
+            else {
+                numIncorrect++ 
+                //add new wrong answer messages 
+                text.innerText = `Your previous answer was incorrect 🚫. Your answer: ${event.target[0].value} vs. Correct Answer: ${currentTerm}`
+                text.style.color = "red"
+                incorrectText.innerHTML = `Incorrect: ${numIncorrect}`
+            }
+            termForm.prepend(text)
+            termForm.reset()
+            testResults() 
         })
+
+        termForm.append(submitButton)
+        main.append(termForm)
+
+        let testResults = function() {
+            if (forwardButton.disabled === true) {
+                resultsSection.innerHTML = `<h3>Results: ${(numCorrect / (numCorrect + numIncorrect)) * 100}%</h3>`
+                const resetButton = document.createElement("button")
+                resetButton.innerText = "Reset"
+                resetButton.className = "btn btn-warning btn-block"
+                document.getElementById("test-form").remove()
+                //Allow user to return to lesson page
+                const backButton = document.createElement("button")
+                backButton.className = "btn btn-primary btn-block"
+                backButton.id = "back-to-lesson"
+                backButton.innerText = "Return To Lesson Page"
+                const currentLesson = Lesson.all.find(lesson => lesson.id === lesson_id)
+                
+                backButton.addEventListener("click", () => {
+                    currentLesson.individualLessonPage()
+                })
+
+                resultsSection.append(resetButton, backButton)
+                resetButton.addEventListener("click", () => {
+                    Flashcard.testMode(lesson_id)
+                })
+            }
+            else {
+                forwardButton.click() 
+                flipButton.click()                         
+            }
+        }
     }
 }
 
