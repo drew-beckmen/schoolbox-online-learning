@@ -160,6 +160,16 @@ class Enrollment {
         deleteCourse.className = "btn btn-outline-info btn-lg"
         deleteCourse.innerText = "Delete this course"
 
+
+        //create a button to see recommended texts:
+        const recommendations = document.createElement("button")
+        recommendations.className = "btn btn-outline-info btn-lg"
+        recommendations.innerText = "Recommended Texts"
+
+        recommendations.addEventListener("click", () => {
+            this.displayRecommendedTexts()
+        })
+
         deleteCourse.addEventListener("click", () => {
             this.deleteCourse()
         })
@@ -190,8 +200,71 @@ class Enrollment {
             })
             listLessons.append(singleLesson)
         }
-        main.append(h1, h3, courseLink, newLesson, deleteCourse, listLessons)
+        main.append(h1, h3, courseLink, newLesson, deleteCourse, recommendations, listLessons)
     }
+
+
+    addBook(data) {
+        let {title, authors, description, previewLink} = data.volumeInfo 
+        let thumbnail = data.volumeInfo.imageLinks.thumbnail
+        const bookDiv = document.createElement("div")
+        bookDiv.className = "book-div"
+        bookDiv.style = "border-radius: 15px 30px; background-color: #549ad6"
+
+        const image = document.createElement("img")
+        image.src = thumbnail
+        const bookTitle = document.createElement("h2")
+        bookTitle.innerText = title
+        const listAuthors = document.createElement("h4")
+        listAuthors.innerText = authors 
+        const bookDescription = document.createElement("p")
+        if (!description) {
+            bookDescription.innerText = "No Description Provided"
+        }
+        else {
+            bookDescription.innerText = description
+        }    
+        image.className = "body-image"
+        image.align = "left"
+        bookTitle.className = "book-info"
+        listAuthors.className = "book-info"
+        bookDescription.className = "book-info"
+
+        bookDiv.addEventListener("click", () => {
+            window.open(previewLink, '_blank')
+        })
+
+        bookDiv.append(image, bookTitle, listAuthors, bookDescription) 
+        main.append(bookDiv)
+    }
+
+
+    async displayRecommendedTexts() {
+        let {title} = await Course.fetchById(this.course_id)
+        const queryTitle = title.replace(/\s/g, '').toLowerCase()
+        main.innerHTML = ""
+        const h1 = document.createElement("h1")
+        h1.innerText = `Recommended Texts for Your Course on ${title}`
+        const h3 = document.createElement("h3")
+        h3.innerText = "Click on a book to read a preview and purchase!"
+
+        //go back to course page
+        const backToCourse = document.createElement("button")
+        backToCourse.className = "btn btn-outline-info btn-lg"
+        backToCourse.innerText = "Return to Course"
+
+        backToCourse.addEventListener("click", () => {
+            this.individualCoursePage()
+        })
+
+        main.append(h1, h3, backToCourse)
+        
+        fetch(`https://www.googleapis.com/books/v1/volumes?q=${queryTitle}&maxResults=10`)
+        .then(response => response.json())
+        .then(obj => obj.items.forEach(book => this.addBook(book)))
+    }
+
+
 
     deleteCourse() {
         //remove the instance from local storage. 

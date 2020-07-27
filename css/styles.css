@@ -91,3 +91,25 @@ body, html {
     border-radius: 10px;
     position: absolute; 
 }
+
+.body-img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.book-info {
+    padding :0 0 0 150px; 
+}
+
+.book-div {
+    margin-bottom: 40px;
+    text-align: center;
+    overflow: auto; 
+}
+
+.btn-outline-info {
+    margin-bottom: 30px;
+}
