@@ -130,12 +130,13 @@ class Lesson {
 
         displayFlashcards.addEventListener("click", () => {
             if (!flashcardState) {
-                const heading = document.createElement("h1")
+                const heading = document.createElement("h2")
                 heading.id = "flashcard-heading"
                 heading.innerText = "Your Lesson's Flashcards: "
 
                 //Create a button to enter into Quiz Mode
                 const quizMode = document.createElement("button")
+                quizMode.id = "quiz"
                 quizMode.className = "btn btn-outline-info"
                 quizMode.innerText = "Enter Quiz Mode"
 
@@ -154,6 +155,7 @@ class Lesson {
                 document.getElementById("flip-flashcard").remove() 
                 document.getElementById("back-flashcard").remove() 
                 document.getElementById("forward-flashcard").remove() 
+                document.getElementById("quiz").remove()
                 displayFlashcards.innerText = "Display Flashcards"
                 editNotes.disabled = false  
             }
