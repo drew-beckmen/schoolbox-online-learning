@@ -156,7 +156,7 @@ class Lesson {
                     Flashcard.testMode(this.id)
                 })
 
-                main.append(heading, quizMode, testMode)
+                main.append(heading, instructions, quizMode, testMode)
                 displayFlashcards.innerText = "Hide Flashcards"
                 Flashcard.render(this.id)
                 editNotes.disabled = true 

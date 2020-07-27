@@ -213,6 +213,7 @@ class Flashcard {
 
         termForm.innerHTML = `<div id="test-form" class="form-group"><label>Enter the Term:</label><input class="form-control" type=text></div>`
         const submitButton = document.createElement("input")
+        submitButton.id = "flashcard-submit"
         submitButton.type = "submit"
         submitButton.className = "form-control"
 
@@ -255,6 +256,7 @@ class Flashcard {
                 resetButton.innerText = "Reset"
                 resetButton.className = "btn btn-warning btn-block"
                 document.getElementById("test-form").remove()
+                document.getElementById("flashcard-submit").remove()
                 //Allow user to return to lesson page
                 const backButton = document.createElement("button")
                 backButton.className = "btn btn-primary btn-block"
