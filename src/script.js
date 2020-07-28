@@ -6,6 +6,7 @@ const newCourse = document.getElementById("new-course")
 let flashcardState = false 
 let user_id; 
 
+
 allCourses.addEventListener("click", () => {
     flashcardState = false 
     main.innerHTML = ""

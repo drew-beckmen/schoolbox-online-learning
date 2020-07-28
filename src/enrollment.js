@@ -132,10 +132,10 @@ class Enrollment {
     async individualCoursePage() {
         main.innerHTML = ""
         const currentCourse = Enrollment.all.find(e => e.id === this.id)
-        const currentLessonIds = currentCourse.lessons.map(lesson => lesson.id) 
+        let currentLessonIds = currentCourse.lessons.map(lesson => lesson.id) 
         let {title, description, platform_id} = await Course.fetchById(currentCourse.course_id)
         let {name} = await Platform.fetchById(platform_id)
-    
+        // debugger 
         //Need to format the individual course show page: 
         const h1 = document.createElement("h1")
         h1.innerText = `${title}: ${description}`
@@ -177,13 +177,18 @@ class Enrollment {
         newLesson.addEventListener("click", () => {
             this.addLesson()
         })
+
+        const lessonHeader = document.createElement("h3")
+        lessonHeader.id = "lessons-header"
+        lessonHeader.innerHTML = `<strong>Lessons:</strong>`
         
         const listLessons = document.createElement("div")
         listLessons.className = "lessons"
-        listLessons.innerHTML = `<br><h3><strong>Lessons:</strong></h3>`
-        for (let itm of currentLessonIds) {
-            //returns instance of Lesson class
-            //TODO: i guess you could insert logic to check if Lesson.all has what you are looking for so no need to make fetch request
+        
+        let addLessons = async function() {
+            listLessons.innerHTML = ""
+            for (let itm of currentLessonIds) {
+            //returns instance of Lesson class (gets added to Lesson.all)
             let currentLesson = await Lesson.fetchById(itm) 
             let {name, description, date} = currentLesson 
             const singleLesson = document.createElement("div")
@@ -194,13 +199,37 @@ class Enrollment {
                 <h5>${description}</h5>
                 <h5>Created: ${date}</h5>`
 
-            //create event listener for when you click on 
+            //create event listener for when you click on a lesson
             singleLesson.addEventListener("click", function() {
                 currentLesson.individualLessonPage()
             })
             listLessons.append(singleLesson)
+            }
         }
-        main.append(h1, h3, courseLink, newLesson, deleteCourse, recommendations, listLessons)
+        main.append(h1, h3, courseLink, newLesson, deleteCourse, recommendations, lessonHeader)
+        
+        //Create checkbox to toggle order of lessons 
+        // -----------------------------------------
+        const toggle = document.createElement("div")
+        toggle.classList.add("custom-control", "custom-switch")
+        toggle.id = "toggle-lessons"
+        const checkbox = document.createElement("input")
+        checkbox.type = "checkbox"
+        checkbox.className = "custom-control-input"
+        checkbox.id = "customSwitch1"
+        const label = document.createElement("label")
+        label.className = "custom-control-label"
+        label.setAttribute("for", "customSwitch1")
+        label.innerText = "See Lessons by Newest First"
+        toggle.append(checkbox, label)
+
+        toggle.addEventListener("change", () => {
+            currentLessonIds = currentLessonIds.reverse() 
+            addLessons()
+        })
+        //-----------------------------------------------------------------
+        addLessons()
+        main.append(toggle, listLessons)
     }
 
 

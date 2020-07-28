@@ -300,12 +300,13 @@ class Flashcard {
 
         let testResults = function() {
             if (forwardButton.disabled === true) {
-                resultsSection.innerHTML = `<h3>Results: ${Math.round((numCorrect / (numCorrect + numIncorrect)) * 100)}%</h3>`
+                resultsSection.innerHTML = `<br><h3>Results: ${Math.round((numCorrect / (numCorrect + numIncorrect)) * 100)}%</h3>`
                 const resetButton = document.createElement("button")
                 resetButton.innerText = "Reset"
                 resetButton.className = "btn btn-warning btn-block"
                 document.getElementById("test-form").remove()
                 document.getElementById("flashcard-submit").remove()
+                
                 //Allow user to return to lesson page
                 const backButton = document.createElement("button")
                 backButton.className = "btn btn-primary btn-block"

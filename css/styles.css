@@ -114,3 +114,12 @@ body, html {
     margin-bottom: 30px;
     margin-right: 5px; 
 }
+
+#lessons-header {
+    text-align: center;
+    background-color: #a6a9ad;
+    border-radius: 15px 30px;
+    padding-top: 10px; 
+    padding-bottom: 10px;
+    width: 100%; 
+}
