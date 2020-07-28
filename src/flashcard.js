@@ -17,6 +17,54 @@ class Flashcard {
         })
     }
 
+    singleFlashcardEditForm() {
+        // Creating Form For Each Flashcard 
+        const formDiv = document.createElement("div")
+        formDiv.className = "form-group"
+        const newForm = document.createElement("form")
+        newForm.id = `edit-flashcard-form-${this.id}`
+        const termLabel = document.createElement("label")
+        termLabel.innerText = "Term"
+        const termInput = document.createElement("input")
+        termInput.className = "form-control"
+        termInput.value = this.term 
+        const definitionLabel = document.createElement("label")
+        definitionLabel.innerText = "Definition"
+        const definitionInput = document.createElement("input")
+        definitionInput.className = "form-control"
+        definitionInput.value = this.definition 
+        const submitButton = document.createElement("input")
+        submitButton.type = "submit"
+        submitButton.className = "form-control"
+        newForm.append(termLabel, termInput, definitionLabel, definitionInput, submitButton)
+        formDiv.append(newForm)
+        main.append(formDiv)
+
+        newForm.append(submitButton)
+        newForm.addEventListener("submit", () => {
+            event.preventDefault()
+            const term = event.target[0].value 
+            const definition = event.target[1].value 
+            fetch(baseURL + `flashcards/${this.id}`, {
+                method: "PATCH", 
+                headers: {
+                    "Content-Type": "application/json", 
+                    Accept: "application/json"
+                }, 
+                body: JSON.stringify({
+                    term, 
+                    definition
+                })
+            })
+            .then(resp => resp.json())
+            .then(obj => {
+                this.term = obj.data.attributes.term 
+                this.definition = obj.data.attributes.definition 
+                alert("Flashcard updated successfully")
+            })
+        })
+    }
+
     static render(lesson_id) {
         //only include flashcards that belong to the current lesson
         const flashcardsToDisplay = Flashcard.all.filter(card => card.lesson_id == lesson_id)

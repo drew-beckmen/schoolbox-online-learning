@@ -73,6 +73,30 @@ class Lesson {
         addFlashcard.className = "btn btn-outline-info btn-lg"
         addFlashcard.innerText = "Add A New Flashcard"
 
+        //Create a button to edit this lesson's flashcards
+        const editFlashcards = document.createElement("button")
+        editFlashcards.className = "btn btn-outline-info btn-lg"
+        editFlashcards.innerText = "Edit Your Flashcards"
+
+        editFlashcards.addEventListener("click", () => {
+            const flashcardsToEdit = Flashcard.all.filter(card => card.lesson_id == this.id)
+            main.innerHTML = `<h1>Edit Flashcards for Your Lesson on ${this.name}</h1>`
+            
+            //button to return to lesson page: 
+            const btn = document.createElement("button")
+            btn.className = "btn btn-outline-info btn-lg"
+            btn.innerText = "Return to Lesson Page"
+            btn.addEventListener("click", () => {
+                this.individualLessonPage()
+            })
+
+            main.append(btn)
+
+            flashcardsToEdit.forEach(card => {
+                card.singleFlashcardEditForm()
+            })
+        })
+
         addFlashcard.addEventListener("click", () => {
             flashcardState = false 
             this.createNewFlashcard()
@@ -84,7 +108,7 @@ class Lesson {
         const noteContent = document.createElement("p")
         noteContent.id = "note-content"
         noteContent.innerHTML = this.notes 
-        singleLesson.append(lessonTitle, lessonDescription, backButton, deleteLesson, addFlashcard, lessonNotes, noteContent)
+        singleLesson.append(lessonTitle, lessonDescription, backButton, deleteLesson, addFlashcard, editFlashcards, lessonNotes, noteContent)
         main.append(singleLesson)
 
         //Edit Notes Button to Add Quill.JS to the DOM
@@ -127,7 +151,6 @@ class Lesson {
             })
             textEditor.append(saveDelta)
         })
-
         displayFlashcards.addEventListener("click", () => {
             if (!flashcardState) {
                 const heading = document.createElement("h2")
@@ -136,6 +159,7 @@ class Lesson {
 
                 const instructions = document.createElement("h4")
                 instructions.innerText = "Want to practice? Try out quiz mode! Ready for a challenge? Try out test mode!"
+                instructions.id = "flashcard-instructions"
 
                 //Create a button to enter into Quiz Mode
                 const quizMode = document.createElement("button")
@@ -150,6 +174,7 @@ class Lesson {
                 //test mode button 
                 const testMode = document.createElement("button")
                 testMode.className = "btn btn-outline-info btn-lg"
+                testMode.id = "enter-test-mode"
                 testMode.innerText = "Enter Test Mode"
 
                 testMode.addEventListener("click", () => {
@@ -166,6 +191,8 @@ class Lesson {
                 document.getElementById("flashcard-heading").remove() 
                 document.getElementById("flip-flashcard").remove() 
                 document.getElementById("back-flashcard").remove() 
+                document.getElementById("enter-test-mode").remove()
+                document.getElementById("flashcard-instructions").remove()
                 document.getElementById("forward-flashcard").remove() 
                 document.getElementById("quiz").remove()
                 displayFlashcards.innerText = "Display Flashcards"
@@ -178,6 +205,7 @@ class Lesson {
 
         //Flashcard Feature: 
         this.flashcards.forEach(card => Flashcard.fetchById(card.id))
+
     } 
 
     createNewFlashcard() {
