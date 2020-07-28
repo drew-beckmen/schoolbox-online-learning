@@ -78,6 +78,22 @@ class Lesson {
         editFlashcards.className = "btn btn-outline-info btn-lg"
         editFlashcards.innerText = "Edit Your Flashcards"
 
+        //Create a button to export this lesson's notes to pdf 
+        const exportNotes = document.createElement("button")
+        exportNotes.className = "btn btn-outline-info btn-lg"
+        exportNotes.innerText = "Export Notes to PDF"
+
+        exportNotes.addEventListener("click", () => {
+            let notes = document.getElementById("note-content")
+            let opt = {
+                margin:       1,
+                filename:     'schoolbox_notes.pdf',
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(notes).save()
+        })
+
         editFlashcards.addEventListener("click", () => {
             const flashcardsToEdit = Flashcard.all.filter(card => card.lesson_id == this.id)
             main.innerHTML = `<h1>Edit Flashcards for Your Lesson on ${this.name}</h1>`
@@ -110,7 +126,7 @@ class Lesson {
         const noteContent = document.createElement("p")
         noteContent.id = "note-content"
         noteContent.innerHTML = this.notes 
-        singleLesson.append(lessonTitle, lessonDescription, backButton, deleteLesson, addFlashcard, editFlashcards, lessonNotes, noteContent)
+        singleLesson.append(lessonTitle, lessonDescription, backButton, deleteLesson, addFlashcard, editFlashcards, exportNotes, lessonNotes, noteContent)
         main.append(singleLesson)
 
         //Edit Notes Button to Add Quill.JS to the DOM
