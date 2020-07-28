@@ -31,6 +31,7 @@ class Lesson {
         .then(resp => resp.json())
         .then(obj => {
             this.notes = obj.data.attributes.notes
+            if (this.notes.length > 0) {document.getElementById("export-notes").disabled = false}
             alert("Notes Saved Successfully!")
             document.getElementById("editor").remove()//.style.visibility = "hidden"
             document.getElementsByClassName("ql-toolbar ql-snow")[0].remove()//.style.visibility = "hidden"
@@ -82,6 +83,8 @@ class Lesson {
         const exportNotes = document.createElement("button")
         exportNotes.className = "btn btn-outline-info btn-lg"
         exportNotes.innerText = "Export Notes to PDF"
+        exportNotes.id = "export-notes"
+        if (this.notes.length === 0) {exportNotes.disabled = true}
 
         exportNotes.addEventListener("click", () => {
             let notes = document.getElementById("note-content")
@@ -141,7 +144,6 @@ class Lesson {
         displayFlashcards.innerText = "Display Flashcards"
         displayFlashcards.id = "display-flashcards"
         if (this.flashcards.length === 0) {displayFlashcards.disabled = true}
-
         editNotes.addEventListener("click", () => {
             //-------Add Quill.JS Editor to the DOM------------
             displayFlashcards.disabled = true 
@@ -154,7 +156,10 @@ class Lesson {
                 theme: 'snow'
             })
             //populate with notes you previously took
-            if (this.notes.length > 0) quill.root.innerHTML = this.notes
+            if (this.notes.length > 0) {
+                quill.root.innerHTML = this.notes
+                exportNotes.disabled = false 
+            }
             editNotes.style.visibility = "hidden";  
             //------------------------------------------------
             const saveDelta = document.createElement("button")
@@ -165,6 +170,7 @@ class Lesson {
             saveDelta.addEventListener("click", () => {
                 const newNotes = quill.root.innerHTML
                 displayFlashcards.disabled = false 
+                if (this.flashcards.length === 0) {displayFlashcards.disabled = true}
                 this.setNotes(newNotes)
             })
             textEditor.append(saveDelta)
@@ -257,7 +263,6 @@ class Lesson {
 
     removeLesson() {
         Lesson.all = Lesson.all.filter(lesson => lesson.id != this.id)
-        debugger
         fetch(baseURL + `lessons/${this.id}`, {
             method: "DELETE"
         })
@@ -267,7 +272,6 @@ class Lesson {
             console.log(this)
             const currentEnrollmentInstance = Enrollment.all.find(itm => itm.id == this.enrollment_id)
             currentEnrollmentInstance.lessons = currentEnrollmentInstance.lessons.filter(lesson => lesson.id !== this.id)
-            debugger 
             currentEnrollmentInstance.individualCoursePage()
         })
     }
