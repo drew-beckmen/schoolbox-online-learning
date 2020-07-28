@@ -123,3 +123,11 @@ body, html {
     padding-bottom: 10px;
     width: 100%; 
 }
+
+.footer {
+    bottom: 0; 
+    text-align: right;
+    background-color: #d7e6f3;
+    padding: 1vh; 
+    margin-top: -0.5px; 
+}
