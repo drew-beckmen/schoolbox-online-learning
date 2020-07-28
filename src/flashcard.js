@@ -204,7 +204,7 @@ class Flashcard {
 
         let showResults = function() {
             if (forwardButton.disabled === true) {
-                resultsSection.innerHTML = `<h3>Results: ${(numCorrect / (numCorrect + numIncorrect)) * 100}%</h3>`
+                resultsSection.innerHTML = `<h3>Results: ${Math.round((numCorrect / (numCorrect + numIncorrect)) * 100)}%</h3>`
                 const resetButton = document.createElement("button")
                 resetButton.innerText = "Reset"
                 resetButton.className = "btn btn-warning btn-block"
@@ -217,6 +217,7 @@ class Flashcard {
                 const currentLesson = Lesson.all.find(lesson => lesson.id === lesson_id)
                 
                 backButton.addEventListener("click", () => {
+                    flashcardState = false 
                     currentLesson.individualLessonPage()
                 })
 
@@ -299,7 +300,7 @@ class Flashcard {
 
         let testResults = function() {
             if (forwardButton.disabled === true) {
-                resultsSection.innerHTML = `<h3>Results: ${(numCorrect / (numCorrect + numIncorrect)) * 100}%</h3>`
+                resultsSection.innerHTML = `<h3>Results: ${Math.round((numCorrect / (numCorrect + numIncorrect)) * 100)}%</h3>`
                 const resetButton = document.createElement("button")
                 resetButton.innerText = "Reset"
                 resetButton.className = "btn btn-warning btn-block"
@@ -313,6 +314,7 @@ class Flashcard {
                 const currentLesson = Lesson.all.find(lesson => lesson.id === lesson_id)
                 
                 backButton.addEventListener("click", () => {
+                    flashcardState = false 
                     currentLesson.individualLessonPage()
                 })
 

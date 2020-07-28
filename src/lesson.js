@@ -87,12 +87,14 @@ class Lesson {
             btn.className = "btn btn-outline-info btn-lg"
             btn.innerText = "Return to Lesson Page"
             btn.addEventListener("click", () => {
+                flashcardState = false 
                 this.individualLessonPage()
             })
 
             main.append(btn)
 
             flashcardsToEdit.forEach(card => {
+                flashcardState = false 
                 card.singleFlashcardEditForm()
             })
         })
