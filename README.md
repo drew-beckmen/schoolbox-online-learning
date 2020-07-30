@@ -9,7 +9,7 @@
 
 
 
-> This project is built with HTML, CSS, and Vanilla JS only. Since the project's emphasis was on solidifying our understanding of vanilla JS, no frameworks or libraries such as React or Angular were used. 
+> This project is a single page application (SPA) built with HTML, CSS, and Vanilla JS only. Since the project's emphasis was on solidifying our understanding of vanilla JS, no frameworks or libraries such as React or Angular were used. 
 
 Module 3 Topics: 
 * Document Object Model 
