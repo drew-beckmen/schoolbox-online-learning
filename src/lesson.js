@@ -151,8 +151,21 @@ class Lesson {
             textEditor.id = "editor"
             main.append(textEditor)
             const editor = document.getElementById("editor")
+            let toolbarOptions = [
+                ['bold', 'italic', 'underline', 'strike'], 
+                ['code-block'], 
+                [{'header': 1}, {'header': 2}], 
+                [{'list': 'ordered'}, {'list': 'bullet'}], 
+                [{'script': 'sub'}, {'script': 'super'}], 
+                [{'size': ['small', 'medium', 'large', 'huge']}], 
+                ['link', 'image', 'video', 'formula'], 
+                [{'color': []}]
+            ]
             const quill = new Quill(editor, {
                 placeholder: 'Compose a new note', 
+                modules: {
+                    toolbar: toolbarOptions
+                }, 
                 theme: 'snow'
             })
             //populate with notes you previously took

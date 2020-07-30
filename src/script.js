@@ -93,6 +93,7 @@ function addCourse(id) {
 }
 
 function loadUserCourses(id) {
+    if (document.getElementsByClassName('footer')[0]) {document.getElementsByClassName('footer')[0].remove()}
     fetch(baseURL + `users/${id}`)
     .then(resp => resp.json())
     .then(obj => addCourses(obj.data.relationships.enrollments.data.map(itm => itm.id)))
